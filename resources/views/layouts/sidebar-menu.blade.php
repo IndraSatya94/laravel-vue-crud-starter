@@ -18,6 +18,15 @@
         </router-link>
       </li>
 
+      <li class="nav-item">
+        <router-link to="/reports" class="nav-link">
+          <i class="nav-icon fas fa-list orange"></i>
+          <p>
+            Report
+          </p>
+        </router-link>
+      </li>
+
       @can('isAdmin')
         <li class="nav-item">
           <router-link to="/users" class="nav-link">

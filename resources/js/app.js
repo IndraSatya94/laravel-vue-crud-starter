@@ -7,10 +7,13 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+
 import moment from 'moment';
 
 import { Form, HasError, AlertError } from 'vform';
 window.Form = Form;
+Vue.component(HasError.name, HasError);
+Vue.component(AlertError.name, AlertError);
 
 import Gate from "./Gate";
 Vue.prototype.$gate = new Gate(window.user);
@@ -49,6 +52,7 @@ Vue.component(AlertError.name, AlertError)
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 import routes from './routes';
+import Vue from 'vue';
 
 const router = new VueRouter({
     mode: 'history',
