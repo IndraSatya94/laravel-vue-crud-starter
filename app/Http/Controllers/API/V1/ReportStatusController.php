@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\API\V1;
-
 use App\Http\Controllers\Controller;
 use App\Models\ReportStatus;
 use Illuminate\Http\Request;
@@ -29,9 +28,9 @@ class ReportStatusController extends BaseController
      */
     public function index()
     {
-        $reportstatuses = $this->reportstatus->latest()->paginate(10);
+        $reportstatuses = $this->reportstatus->all();
 
-        return $this->sendResponse($reportstatuses, 'Report Status list');
+        return $reportstatuses;
     }
 
     /**
@@ -41,9 +40,9 @@ class ReportStatusController extends BaseController
      */
     public function list()
     {
-        $reportstatuses = $this->reportstatus->pluck('name', 'id');
+        // $reportstatuses = $this->reportstatus->pluck('name', 'id');
 
-        return $this->sendResponse($reportstatuses, 'Report Status list');
+        // return $this->sendResponse($reportstatuses, 'Report Status list');
     }
 
 
