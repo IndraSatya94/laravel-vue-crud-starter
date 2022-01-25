@@ -31,7 +31,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="item in report" :key="item.id">
+                                    <tr v-for="item in reports.data" :key="item.id">
 
                                         <td>{{item.id}}</td>
                                         <td>{{item.subject}}</td>
@@ -61,46 +61,162 @@
 </template>
 
 <script>
+  import VueTagsInput from '@johmun/vue-tags-input';
+
     export default {
-        data: function () {
+      components: {
+          VueTagsInput,
+        },
+        data () {
             return {
-                report: {},
+                editmode: false,
+                reports : {},
                 form: new Form({
-                    id: '',
+                    id : '',
+                    reportstatus : '',
                     subject: '',
                     description: '',
                     reportstatus_id: '',
-                    name: '',
                 }),
                 reportstatus: [],
+              
+                tag:  '',
+                autocompleteItems: [],
             }
         },
-
         methods: {
-            loadReportstatuses() {
-                axios.get('/api/reportstatus/list').then(response => {
-                        this.report = response.data;
 
-                    })
-                    .catch(error => {
-                        console.log(error.response.data);
-                    });
-            },
-            loadReports() {
-                axios.get('/api/report').then(response => {
-                        this.report = response.data;
+          getResults(page = 1) {
 
-                    })
-                    .catch(error => {
-                        console.log(error.response.data);
+              this.$Progress.start();
+              
+              axios.get('api/report?page=' + page).then(({ data }) => (this.reports = data.data));
+
+              this.$Progress.finish();
+          },
+          loadReports(){
+
+            // if(this.$gate.isAdmin()){
+              axios.get("api/report").then(({ data }) => (this.reports = data.data));
+            // }
+          },
+          loadReportStatus(){
+              axios.get("/api/reportstatus/list").then(({ data }) => (this.reportstatus = data.data));
+          },
+
+          editModal(report){
+              this.editmode = true;
+              this.form.reset();
+              $('#addNew').modal('show');
+              this.form.fill(report);
+          },
+          newModal(){
+              this.editmode = false;
+              this.form.reset();
+              $('#addNew').modal('show');
+          },
+          createReport(){
+              this.$Progress.start();
+
+              this.form.post('api/report')
+              .then((data)=>{
+                if(data.data.success){
+                  $('#addNew').modal('hide');
+
+                  Toast.fire({
+                        icon: 'success',
+                        title: data.data.message
                     });
-            }
+                  this.$Progress.finish();
+                  this.loadReports();
+
+                } else {
+                  Toast.fire({
+                      icon: 'error',
+                      title: 'Some error occured! Please try again'
+                  });
+
+                  this.$Progress.failed();
+                }
+              })
+              .catch(()=>{
+
+                  Toast.fire({
+                      icon: 'error',
+                      title: 'Some error occured! Please try again'
+                  });
+              })
+          },
+          updateReport(){
+              this.$Progress.start();
+              this.form.put('api/report/'+this.form.id)
+              .then((response) => {
+                  // success
+                  $('#addNew').modal('hide');
+                  Toast.fire({
+                    icon: 'success',
+                    title: response.data.message
+                  });
+                  this.$Progress.finish();
+                      //  Fire.$emit('AfterCreate');
+
+                  this.loadReports();
+              })
+              .catch(() => {
+                  this.$Progress.fail();
+              });
+
+          },
+          deleteReport(id){
+              Swal.fire({
+                  title: 'Are you sure?',
+                  text: "You won't be able to revert this!",
+                  showCancelButton: true,
+                  confirmButtonColor: '#d33',
+                  cancelButtonColor: '#3085d6',
+                  confirmButtonText: 'Yes, delete it!'
+                  }).then((result) => {
+
+                      // Send request to the server
+                        if (result.value) {
+                              this.form.delete('api/report/'+id).then(()=>{
+                                      Swal.fire(
+                                      'Deleted!',
+                                      'Your file has been deleted.',
+                                      'success'
+                                      );
+                                  // Fire.$emit('AfterCreate');
+                                  this.loadReports();
+                              }).catch((data)=> {
+                                  Swal.fire("Failed!", data.message, "warning");
+                              });
+                        }
+                  })
+          },
+
         },
-
+        mounted() {
+            
+        },
         created() {
-            this.loadReports();
-            this.loadReportstatuses();
-        }
-    };
+            this.$Progress.start();
 
+            this.loadReports();
+            this.loadReportStatus();
+
+            this.$Progress.finish();
+        },
+        filters: {
+            truncate: function (text, length, suffix) {
+                return text.substring(0, length) + suffix;
+            },
+        },
+        computed: {
+          filteredItems() {
+            return this.autocompleteItems.filter(i => {
+              return i.text.toLowerCase().indexOf(this.tag.toLowerCase()) !== -1;
+            });
+          },
+        },
+    }
 </script>

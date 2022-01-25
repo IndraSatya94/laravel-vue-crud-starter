@@ -6,18 +6,21 @@ use App\Models\Report;
 
 class ReportController extends BaseController
 {
-    // protected $report = '';
+    protected $report = '';
 
-    // public function __construct(Report $report)
-    // {
-    //     $this->middleware('auth:api');
-    //     $this->report = $report;
-    // }
+    public function __construct(Report $report)
+    {
+        $this->middleware('auth:api');
+        $this->report = $report;
+    }
 
     public function index()
     {
-        $reports = Report::all();
+        $reports = $this->report->latest()->with('reportstatus')->paginate(10);
 
-        return $reports;
+        return $this->sendResponse($reports, 'Report list');
+        // $reports = Report::all();
+
+        // return $reports;
     }
 }
