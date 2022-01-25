@@ -31,17 +31,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="item in reports.data" :key="item.id">
+                                    <tr v-for="report in reports.data" :key="report.id">
 
-                                        <td>{{item.id}}</td>
-                                        <td>{{item.subject}}</td>
-                                        <td>{{item.description}}</td>
-                                        <td>{{item.reportstatus.name}}</td>
+                                        <td>{{report.id}}</td>
+                                        <td>{{report.subject}}</td>
+                                        <td>{{report.description}}</td>
+                                        <td>{{report.reportstatus.name}}</td>
                                         <!-- <td>{{item.ReportType.name}}</td> -->
 
                                         <td>
-                                            <a href="">edit</a>
-                                            <a href="">delete</a>
+                                            <a href="#" @click="editModal(report)">
+                            <i class="fa fa-edit blue"></i>
+                        </a>
+                        /
+                        <a href="#" @click="deleteReport(report.id)">
+                            <i class="fa fa-trash red"></i>
+                        </a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -55,7 +60,59 @@
                     <!-- /.card -->
                 </div>
             </div>
+        <!-- Modal -->
+        <div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNew" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" v-show="!editmode">Create New Product</h5>
+                    <h5 class="modal-title" v-show="editmode">Edit Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
+                <form @submit.prevent="editmode ? updateReport() : createReport()">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <input v-model="form.subject" type="text" name="subject"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('subject') }">
+                            <has-error :form="form" field="subject"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input v-model="form.description" type="text" name="description"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('description') }">
+                            <has-error :form="form" field="description"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input v-model="form.price" type="text" name="price"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('price') }">
+                            <has-error :form="form" field="price"></has-error>
+                        </div>
+                        <div class="form-group">
+
+                            <label>Report Status</label>
+                            <select class="form-control" v-model="form.reportstatus_id">
+                              <option 
+                                  v-for="(cat,index) in reportstatus" :key="index"
+                                  :value="index"
+                                  :selected="index == form.reportstatus_id">{{ cat }}</option>
+                            </select>
+                            <has-error :form="form" field="reportstatus_id"></has-error>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button v-show="editmode" type="submit" class="btn btn-success">Update</button>
+                        <button v-show="!editmode" type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
         </div>
     </section>
 </template>
