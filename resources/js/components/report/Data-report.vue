@@ -11,10 +11,10 @@
 
                             <div class="card-tools">
 
-                                <button type="button" class="btn btn-sm btn-primary">
-                                    <i class="fa fa-plus-square"></i>
-                                    Add New
-                                </button>
+                                <button type="button" class="btn btn-sm btn-primary" @click="newModal">
+                      <i class="fa fa-plus-square"></i>
+                      Add New
+                  </button>
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -54,7 +54,7 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-
+<pagination :data="reports" @pagination-change-page="getResults"></pagination>
                         </div>
                     </div>
                     <!-- /.card -->
@@ -86,18 +86,13 @@
                                 class="form-control" :class="{ 'is-invalid': form.errors.has('description') }">
                             <has-error :form="form" field="description"></has-error>
                         </div>
-                        <div class="form-group">
-                            <label>Price</label>
-                            <input v-model="form.price" type="text" name="price"
-                                class="form-control" :class="{ 'is-invalid': form.errors.has('price') }">
-                            <has-error :form="form" field="price"></has-error>
-                        </div>
+
                         <div class="form-group">
 
                             <label>Report Status</label>
                             <select class="form-control" v-model="form.reportstatus_id">
                               <option 
-                                  v-for="(cat,index) in reportstatus" :key="index"
+                                  v-for="(cat,index) in reportstatuses" :key="index"
                                   :value="index"
                                   :selected="index == form.reportstatus_id">{{ cat }}</option>
                             </select>
@@ -135,9 +130,8 @@
                     description: '',
                     reportstatus_id: '',
                 }),
-                reportstatus: [],
-              
-                tag:  '',
+                reportstatuses: [],
+
                 autocompleteItems: [],
             }
         },
@@ -158,7 +152,7 @@
             // }
           },
           loadReportStatus(){
-              axios.get("/api/reportstatus/list").then(({ data }) => (this.reportstatus = data.data));
+              axios.get("/api/reportstatus/list").then(({ data }) => (this.reportstatuses = data.data));
           },
 
           editModal(report){

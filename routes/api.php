@@ -34,7 +34,7 @@ Route::namespace('App\\Http\\Controllers\\API\V1')->group(function () {
     Route::get('category/list', 'CategoryController@list');
     Route::post('product/upload', 'ProductController@upload');
 
-    Route::get('report', 'ReportController@index');
+    // Route::get('report', 'ReportController@index');
     // Route::get('report', [ReportController::class, 'index']);
     Route::get('reportstatus/list', 'ReportStatusController@list');
 
