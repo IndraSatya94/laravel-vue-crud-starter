@@ -126,6 +126,7 @@
                 form: new Form({
                     id : '',
                     reportstatus : '',
+                    name: '',
                     subject: '',
                     description: '',
                     reportstatus_id: '',
@@ -151,7 +152,7 @@
               axios.get("api/report").then(({ data }) => (this.reports = data.data));
             // }
           },
-          loadReportStatus(){
+          loadReportStatuses(){
               axios.get("/api/reportstatus/list").then(({ data }) => (this.reportstatuses = data.data));
           },
 
@@ -253,7 +254,7 @@
             this.$Progress.start();
 
             this.loadReports();
-            this.loadReportStatus();
+            this.loadReportStatuses();
 
             this.$Progress.finish();
         },

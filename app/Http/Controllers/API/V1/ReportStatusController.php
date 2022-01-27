@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ReportStatusController extends BaseController
 {
-    protected $category = '';
+    protected $reportstatus = '';
 
     /**
      * Create a new controller instance.
@@ -28,9 +28,9 @@ class ReportStatusController extends BaseController
      */
     public function index()
     {
-        $reportstatuses = $this->reportstatus->all();
+        $reportstatuses = $this->reportstatus->latest()->paginate(10);
 
-        return $reportstatuses;
+        return $this->sendResponse($reportstatuses, 'Report status list');
     }
 
     /**
@@ -40,9 +40,9 @@ class ReportStatusController extends BaseController
      */
     public function list()
     {
-        // $reportstatuses = $this->reportstatus->pluck('name', 'id');
+        $reportstatuses = $this->reportstatus->pluck('name', 'id');
 
-        // return $this->sendResponse($reportstatuses, 'Report Status list');
+        return $this->sendResponse($reportstatuses, 'Report Status list');
     }
 
 
