@@ -37,6 +37,7 @@ Route::namespace('App\\Http\\Controllers\\API\V1')->group(function () {
     // Route::get('report', 'ReportController@index');
     // Route::get('report', [ReportController::class, 'index']);
     Route::get('reportstatus/list', 'ReportStatusController@list');
+    Route::get('reporttype/list', 'ReportTypeController@list');
 
     Route::apiResources([
         'user' => 'UserController',
@@ -45,6 +46,7 @@ Route::namespace('App\\Http\\Controllers\\API\V1')->group(function () {
         'tag' => 'TagController',
 
         'reportstatus' => 'ReportStatusController',
+        'reporttype' => 'ReportTypeController',
         'report' => 'ReportController',
         'skpd' => 'SkpdController',
     ]);

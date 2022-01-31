@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Requests\Reports\ReportRequest;
 use App\Models\Report;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends BaseController
 {
@@ -18,7 +19,7 @@ class ReportController extends BaseController
 
     public function index()
     {
-        $reports = $this->report->latest()->with('reportstatus')->paginate(10);
+        $reports = $this->report->latest()->with('reportstatus','reporttype')->paginate(10);
 
         return $this->sendResponse($reports, 'Report list');
         // $reports = Report::all();
@@ -32,6 +33,8 @@ class ReportController extends BaseController
             'description' => $request->get('description'),
             // 'price' => $request->get('price'),
             'reportstatus_id' => $request->get('reportstatus_id'),
+            'reporttype_id' => $request->get('reporttype_id'),
+            'user_id'=> Auth::id(),
         ]);
 
         // update pivot table

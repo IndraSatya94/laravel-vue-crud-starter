@@ -9,14 +9,14 @@
         </router-link>
       </li>
 
-      <li class="nav-item">
+      {{-- <li class="nav-item">
         <router-link to="/products" class="nav-link">
           <i class="nav-icon fas fa-list orange"></i>
           <p>
             Product
           </p>
         </router-link>
-      </li>
+      </li> --}}
 
       <li class="nav-item">
         <router-link to="/reports" class="nav-link">
@@ -47,7 +47,7 @@
 
       
 
-      @can('isAdmin')
+      {{-- @can('isAdmin')
       <li class="nav-item has-treeview">
         <a href="#" class="nav-link">
           <i class="nav-icon fas fa-cog green"></i>
@@ -86,7 +86,7 @@
         </ul>
       </li>
 
-      @endcan
+      @endcan --}}
       
       
 

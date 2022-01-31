@@ -11,13 +11,13 @@ class Report extends Model
     // protected $table = "reports";
     // protected $primaryKey = "id";
     protected $fillable = [
-        'subject', 'description', 'reportstatus_id'
+        'subject', 'description', 'reportstatus_id', 'reporttype_id', 'user_id'
     ];
 
-    // public function reporttype()
-    // {
-    //     return $this->belongsTo(ReportType::class);
-    // }
+    public function reporttype()
+    {
+        return $this->belongsTo(ReportType::class);
+    }
 
     public function reportstatus()
     {
