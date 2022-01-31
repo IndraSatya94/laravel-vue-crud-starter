@@ -12,7 +12,7 @@
                             <div class="card-tools">
 
                                 <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                                    data-target="#addProduct">
+                                    data-target="#addProduct"  @click="newModal">
                                     <i class="fa fa-plus-square"></i>
                                     Add New
                                 </button>
@@ -142,36 +142,36 @@
               $('#addNew').modal('show');
           },
           createSkpd(){
-              this.$Progress.start();
+                this.$Progress.start();
 
-              this.form.post('api/skpd')
-              .then((data)=>{
-                if(data.data.success){
-                  $('#addNew').modal('hide');
+                this.form.post('api/skpd')
+                    .then((data) => {
+                        if (data.data.success) {
+                            $('#addNew').modal('hide');
 
-                  Toast.fire({
-                        icon: 'success',
-                        title: data.data.message
-                    });
-                  this.$Progress.finish();
-                  this.loadSkpds();
+                            Toast.fire({
+                                icon: 'success',
+                                title: data.data.message
+                            });
+                            this.$Progress.finish();
+                            this.loadSkpds();
 
-                } else {
-                  Toast.fire({
-                      icon: 'error',
-                      title: 'Some error occured! Please try again'
-                  });
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Some error occured! Please try again'
+                            });
 
-                  this.$Progress.failed();
-                }
-              })
-              .catch(()=>{
+                            this.$Progress.failed();
+                        }
+                    })
+                    .catch(() => {
 
-                  Toast.fire({
-                      icon: 'error',
-                      title: 'Some error occured! Please try again'
-                  });
-              })
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Some error occured! Please try again'
+                        });
+                    })
           },
           updateSkpd(){
               this.$Progress.start();
