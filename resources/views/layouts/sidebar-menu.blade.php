@@ -27,6 +27,15 @@
         </router-link>
       </li>
 
+      <li class="nav-item">
+        <router-link to="/skpd" class="nav-link">
+          <i class="nav-icon fas fa-list orange"></i>
+          <p>
+            Skpd
+          </p>
+        </router-link>
+      </li>
+
       @can('isAdmin')
         <li class="nav-item">
           <router-link to="/users" class="nav-link">

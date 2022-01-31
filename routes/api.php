@@ -46,5 +46,6 @@ Route::namespace('App\\Http\\Controllers\\API\V1')->group(function () {
 
         'reportstatus' => 'ReportStatusController',
         'report' => 'ReportController',
+        'skpd' => 'SkpdController',
     ]);
 });

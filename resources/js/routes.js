@@ -9,4 +9,5 @@ export default [
     { path: '*', component: require('./components/NotFound.vue').default },
 
     { path: '/reports', component: require('./components/report/Data-report.vue').default },
+    { path: '/skpd', component: require('./components/Skpd.vue').default },
 ];
